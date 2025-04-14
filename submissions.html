@@ -1,0 +1,77 @@
+<!-- submissions.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <!-- Same header as your other pages -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <title>Submitted Inquiries - The New Fitness Club</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
+<style>
+    .submission-card {
+        background-color: #f9f9f9;
+        border-left: 3px solid #ff6600;
+        padding: 15px;
+        margin-bottom: 20px;
+        border-radius: 5px;
+    }
+    
+    .message-box {
+        background-color: #fff;
+        border: 1px solid #ddd;
+        padding: 10px;
+        border-radius: 5px;
+        margin-top: 5px;
+    }
+</style>
+</head>
+<body>
+    <!-- Same header and navigation -->
+    
+    <div class="content">
+        <h1>Submitted <span class="highlight">Inquiries</span></h1>
+        <p>Below are the inquiries submitted through our contact form:</p>
+        
+        <div id="noSubmissions" style="display:none;">
+            <p>No inquiries have been submitted yet.</p>
+        </div>
+        
+        <div id="submissionsList"></div>
+    </div>
+    
+    <!-- Same footer -->
+    
+    <script>
+        $(document).ready(function() {
+            // Retrieve submissions from localStorage
+            const submissions = JSON.parse(localStorage.getItem('formSubmissions')) || [];
+            
+            if (submissions.length === 0) {
+                $('#noSubmissions').show();
+            } else {
+                // Display each submission
+                submissions.forEach(function(submission, index) {
+                    const $submissionCard = $('<div class="submission-card"></div>');
+                    $submissionCard.html(`
+                        <h3>Inquiry #${index + 1}</h3>
+                        <p><strong>Date:</strong> ${new Date(submission.timestamp).toLocaleString()}</p>
+                        <p><strong>Name:</strong> ${submission.name}</p>
+                        <p><strong>Email:</strong> ${submission.email}</p>
+                        <p><strong>Phone:</strong> ${submission.phone || 'Not provided'}</p>
+                        <p><strong>Subject:</strong> ${submission.subject}</p>
+                        <p><strong>Message:</strong></p>
+                        <div class="message-box">${submission.message}</div>
+                    `);
+                    
+                    $('#submissionsList').append($submissionCard);
+                });
+            }
+        });
+    </script>
+    
+   
+</body>
+</html>
