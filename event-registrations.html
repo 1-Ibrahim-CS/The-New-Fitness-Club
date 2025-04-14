@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Event Registrations - The New Fitness Club</title>
+    <meta charset="UTF-8">
+    <style>
+        .registrations-container {
+            margin-top: 20px;
+        }
+        .registration-card {
+            background-color: #f9f9f9;
+            border-left: 3px solid #ff6600;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+        }
+        .registration-date {
+            color: #888;
+            font-size: 0.9em;
+            text-align: right;
+        }
+        .no-registrations {
+            padding: 20px;
+            background-color: #f9f9f9;
+            border-radius: 5px;
+            text-align: center;
+        }
+        .filter-options {
+            margin-bottom: 20px;
+            display: flex;
+            gap: 15px;
+        }
+        .filter-button {
+            background-color: #eee;
+            border: none;
+            padding: 8px 15px;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+        .filter-button.active {
+            background-color: #ff6600;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <table class="main-table">
+        <!-- Header and navigation same as other pages -->
+        
+        <!-- Content Row -->
+        <tr>
+            <td class="content">
+                <h1>Event <span class="highlight">Registrations</span></h1>
+                <p>Below is a list of all current registrations for upcoming events.</p>
+                
+                <div class="filter-options">
+                    <button class="filter-button active" data-filter="all">All Events</button>
+                    <button class="filter-button" data-filter="Spring Fitness Challenge">Spring Challenge</button>
+                    <button class="filter-button" data-filter="Nutrition & Wellness Workshop">Wellness Workshop</button>
+                    <button class="filter-button" data-filter="Guest Instructor Masterclass">HIIT Masterclass</button>
+                </div>
+                
+                <div id="noRegistrations" class="no-registrations" style="display:none;">
+                    <p>No registrations have been submitted yet.</p>
+                </div>
+                
+                <div id="registrationsList" class="registrations-container"></div>
+            </td>
+        </tr>
+        
+        <!-- Footer Row - Same as other pages -->
+    </table>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Get registrations from localStorage
+            const registrations = JSON.parse(localStorage.getItem('eventRegistrations')) || [];
+            const registrationsList = document.getElementById('registrationsList');
+            const noRegistrations = document.getElementById('noRegistrations');
+            
+            // Filter buttons
+            const filterButtons = document.querySelectorAll('.filter-button');
+            
+            // Show "no registrations" message if empty
+            if (registrations.length === 0) {
+                noRegistrations.style.display = 'block';
+            } else {
+                // Display all registrations initially
+                displayRegistrations('all');
+                
+                // Add filter functionality
+                filterButtons.forEach(button => {
+                    button.addEventListener('click', function() {
+                        // Update active button styling
+                        filterButtons.forEach(btn => btn.classList.remove('active'));
+                        this.classList.add('active');
+                        
+                        // Filter registrations
+                        const filterValue = this.getAttribute('data-filter');
+                        displayRegistrations(filterValue);
+                    });
+                });
+            }
+            
+            function displayRegistrations(filter) {
+                // Clear current list
+                registrationsList.innerHTML = '';
+                
+                // Filter registrations
+                const filteredRegistrations = filter === 'all' 
+                    ? registrations 
+                    : registrations.filter(reg => reg.eventTitle.includes(filter));           
+                if (filteredRegistrations.length === 0) {
+                    noRegistrations.style.display = 'block';
+                } else {
+                    noRegistrations.style.display = 'none';               
+                    // Sort by registration date (newest first)
+                    filteredRegistrations.sort((a, b) => 
+                        new Date(b.registeredAt) - new Date(a.registeredAt));
+                    // Create cards for each registration
+                    filteredRegistrations.forEach(reg => {
+                        const card = document.createElement('div');
+                        card.className = 'registration-card';
+                        
+                        const regDate = new Date(reg.registeredAt).toLocaleString();
+                        
+                        card.innerHTML = `
+                            <h3>${reg.eventTitle}</h3>
+                            <p><strong>Event Date:</strong> ${reg.eventDate}</p>
+                            <p><strong>Registrant:</strong> ${reg.name}</p>
+                            <p><strong>Email:</strong> ${reg.email}</p>
+                            <p><strong>Phone:</strong> ${reg.phone || 'Not provided'}</p>
+                            <p><strong>Status:</strong> ${reg.membership === 'member' ? 'Member' : 'Non-Member'}</p>
+                            <div class="registration-date">Registered on: ${regDate}</div>
+                        `;
+                        
+                        registrationsList.appendChild(card);
+                    });
+                }
+            }
+        });
+    </script>
+</body>
+</html>
