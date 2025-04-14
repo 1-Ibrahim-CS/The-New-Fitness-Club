@@ -1,0 +1,81 @@
+
+        .content {
+            padding: 20px;
+            background-color: white;
+        }
+        .footer {
+            text-align: center;
+            padding: 20px;
+            background-color: #222;
+            color: white;
+            font-size: 14px;
+        }
+        .gallery-banner {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+        }
+        .gallery-container {
+            margin: 20px 0;
+        }
+        .gallery-title {
+            font-size: 24px;
+            color: #333;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #ff6600;
+        }
+        .gallery-description {
+            margin-bottom: 20px;
+        }
+        .gallery-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .gallery-table td {
+            padding: 10px;
+            text-align: center;
+            width: 33.33%;
+        }
+        .gallery-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border: 1px solid #ddd;
+            transition: transform 0.3s ease;
+        }
+        .gallery-image:hover {
+            transform: scale(1.05);
+            border-color: #ff6600;
+        }
+        .image-caption {
+            margin-top: 8px;
+            font-size: 14px;
+            color: #666;
+        }
+        .category-tab-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        .category-tab-table td {
+            padding: 10px;
+            text-align: center;
+            background-color: #eee;
+            border: 1px solid #ddd;
+            cursor: pointer;
+        }
+        .category-tab-table td:hover {
+            background-color: #ff6600;
+            color: white;
+        }
+        .category-tab-active {
+            background-color: #ff6600 !important;
+            color: white;
+        }
+        .highlight {
+            color: #ff6600;
+        }
+        h1, h2, h3 {
+            color: #333;
+        }
